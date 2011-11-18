@@ -26,6 +26,10 @@ template "/etc/apt/sources.list" do
   source "sources.list.erb"
 end
 
+package "python-software-properties" do
+  action :install
+end
+
 bash "add_handbreak_repo" do
   code <<-EOH
     add-apt-repository ppa:stebbins/handbrake-releases
