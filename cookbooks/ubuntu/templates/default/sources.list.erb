@@ -13,3 +13,9 @@ deb-src <%= node['ubuntu']['archive_url'] %> <%= @code_name %>-updates main rest
 #
 deb <%= node['ubuntu']['security_url'] %> <%= @code_name %>-security main restricted universe multiverse 
 deb-src <%= node['ubuntu']['security_url'] %> <%= @code_name %>-security main restricted universe multiverse 
+
+#
+# Handbrake
+#
+deb http://ppa.launchpad.net/stebbins/handbrake-releases/ubuntu <%= @code_name %> main 
+deb-src http://ppa.launchpad.net/stebbins/handbrake-releases/ubuntu <%= @code_name %> main
