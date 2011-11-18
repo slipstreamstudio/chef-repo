@@ -44,7 +44,8 @@ node.set[:nginx][:configure_flags] = [
   "--prefix=#{node[:nginx][:install_path]}",
   "--conf-path=#{node[:nginx][:dir]}/nginx.conf",
   "--with-http_ssl_module",
-  "--with-http_gzip_static_module"
+  "--with-http_gzip_static_module",
+  "--add-module=#{Chef::Config[:file_cache_path]}/upload_progress"
 ]
 
 configure_flags = node[:nginx][:configure_flags].join(" ")
@@ -54,9 +55,16 @@ remote_file "#{Chef::Config[:file_cache_path]}/nginx-#{nginx_version}.tar.gz" do
   action :create_if_missing
 end
 
+remote_file "#{Chef::Config[:file_cache_path]}/upload_progress.tar.gz" do
+  source "https://github.com/masterzen/nginx-upload-progress-module/tarball/master"
+  action :create_if_missing
+end
+
 bash "compile_nginx_source" do
   cwd Chef::Config[:file_cache_path]
   code <<-EOH
+    tar zxf upload_progress.tar.gz
+    mv masterzen-nginx-upload-progress* upload_progress
     tar zxf nginx-#{nginx_version}.tar.gz
     cd nginx-#{nginx_version} && ./configure #{configure_flags}
     make && make install
