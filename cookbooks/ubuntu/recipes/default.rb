@@ -26,6 +26,7 @@ end
 bash "add_handbreak_repo" do
   code <<-EOH
     add-apt-repository ppa:stebbins/handbrake-releases
+    apt-get update
   EOH
 end
 
