@@ -19,13 +19,6 @@
 
 include_recipe "apt"
 
-template "/etc/apt/sources.list" do
-  mode 0644
-  variables :code_name => node[:lsb][:codename]
-  notifies :run, resources(:execute => "apt-get-update"), :immediately
-  source "sources.list.erb"
-end
-
 package "python-software-properties" do
   action :install
 end
@@ -34,4 +27,12 @@ bash "add_handbreak_repo" do
   code <<-EOH
     add-apt-repository ppa:stebbins/handbrake-releases
   EOH
+end
+
+
+template "/etc/apt/sources.list" do
+  mode 0644
+  variables :code_name => node[:lsb][:codename]
+  notifies :run, resources(:execute => "apt-get-update"), :immediately
+  source "sources.list.erb"
 end
